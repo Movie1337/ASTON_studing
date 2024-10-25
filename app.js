@@ -4,3 +4,9 @@ const helloWorld = () => {
 };
 
 helloWorld();
+
+const sumNumbers = (num1, num2) => {
+  return num1 + num2;
+};
+
+sumNumbers(1, 2);
