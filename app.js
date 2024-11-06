@@ -1,122 +1,148 @@
 // Задание 1
-// 1 способ
-const counter = {
-  count: 0,
-  increment: function () {
-    this.count++;
-  },
-  decrement: function () {
-    this.count--;
-  },
-};
-
-// 2 способ
-function Counter() {
-  this.count = 0;
-  this.increment = function () {
-    this.count++;
-  };
-  this.decrement = function () {
-    this.count--;
-  };
-}
-
-const counterSecond = new Counter();
-
-// 3 способ
-class Counter {
-  count = 0;
-  increment() {
-    this.count++;
-  }
-  decrement() {
-    this.count--;
-  }
-}
-
-const counterThird = new Counter();
-
-// 4 способ
-const counterPrototype = {
-  increment: function () {
-    this.count++;
-  },
-  decrement: function () {
-    this.count--;
-  },
-};
-
-const counterFourth = Object.create(counterPrototype);
-counter.count = 0;
-
-// 5 способ
-const initialValues = { count: 0 };
-const counter = Object.assign({}, initialValues, {
-  increment: function () {
-    this.count++;
-  },
-  decrement: function () {
-    this.count--;
-  },
-});
+// Массивы в JavaScript часто называют "неправильными" потому, что они представляют собой гибрид нескольких структур данных, а не являются чистыми массивами в традиционном понимании.
+// Static Arrays, Dynamic Arrays, Linked Lists, Doubly Linked Lists, Hash Tables, Binary Trees, Graphs.
 
 // Задание 2
-// 1 способ
-const copiedCounter = Object.assign({}, counter);
-
-// 2 способ
-const copiedCounterSecond = { ...counter };
-
-// Задание 3
-// 1 способ
-function makeCounter() {
-  let count = 0;
-  return {
-    increment: () => count++,
-    decrement: () => count--,
-    getCount: () => count,
-  };
+// Bind
+function logger() {
+  console.log(`I output only external context: ${this.item}`);
 }
 
-// 2 способ
-function makeCounter() {
-  let count = 0;
-  return {
-    increment: function () {
-      this.count++;
-    },
-    decrement: function () {
-      this.count--;
-    },
-    getCount: function () {
-      return this.count;
-    },
-  };
+const obj = { item: "some value" };
+
+const boundLogger = logger.bind(obj);
+boundLogger();
+
+// Call
+function loggerSecond() {
+  console.log(`I output only external context: ${this.item}`);
 }
 
-// 3 способ
-function MakeCounter() {
-  this.count = 0;
-  this.increment = () => this.count++;
-  this.decrement = () => this.count--;
-  this.getCount = () => this.count;
+const objSecond = { item: "some value" };
+
+logger.call(objSecond);
+
+// Apply
+function loggerThird() {
+  console.log(`I output only external context: ${this.item}`);
 }
 
-// 4 способ
-class MakeCounter {
-  count = 0;
-  increment() {
-    this.count++;
+const objThird = { item: "some value" };
+
+logger.apply(objThird);
+
+// Задание 3.1
+const arrayOfNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+return arrayOfNumbers.reduce((acc, item) => acc + item, 0);
+
+const arrayOfStrings = ["Hello,", "my", "name", "is", "Matthew."];
+return (joinedString = arrayOfStrings.join(" "));
+
+const arrayOfNumbersSecond = [99, 22, 77, 44, 55, 66, 33, 88, 11];
+const maxNumber = Math.max(...arrayOfNumbersSecond);
+const minNumber = Math.min(...arrayOfNumbersSecond);
+
+// Задание 3.2
+class Stack {
+  constructor() {
+    this.items = [];
   }
-  decrement() {
-    this.count--;
+
+  push(element) {
+    this.items.push(element);
   }
-  getCount() {
-    return this.count;
+
+  pop() {
+    if (this.isEmpty()) {
+      return "Стек пуст";
+    }
+    return this.items.pop();
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      return "Стек пуст";
+    }
+    return this.items[this.items.length - 1];
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+
+  size() {
+    return this.items.length;
+  }
+
+  clear() {
+    this.items = [];
+  }
+
+  printStack() {
+    console.log(this.items);
   }
 }
 
-// Бонус задание 2
-function reverseStr(str) {
-  return str.split("").reverse().join("");
+// Задание 3.3
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+
+  enqueue(element) {
+    this.items.push(element);
+  }
+
+  dequeue() {
+    if (this.isEmpty()) {
+      return "Очередь пуста";
+    }
+    return this.items.shift();
+  }
+
+  front() {
+    if (this.isEmpty()) {
+      return "Очередь пуста";
+    }
+    return this.items[0];
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+
+  size() {
+    return this.items.length;
+  }
+
+  clear() {
+    this.items = [];
+  }
+
+  printQueue() {
+    console.log(this.items);
+  }
 }
+
+const queue = new Queue();
+
+queue.enqueue("Иван");
+queue.enqueue("Мария");
+queue.enqueue("Петр");
+queue.enqueue("Ольга");
+console.log("Очередь:", queue.printQueue());
+
+console.log("Обслуживается:", queue.dequeue());
+console.log("Очередь:", queue.printQueue());
+
+queue.enqueue("Сергей");
+console.log("Очередь:", queue.printQueue());
+
+console.log("Обслуживается:", queue.dequeue());
+console.log("Очередь:", queue.printQueue());
+
+console.log("Следующий в очереди:", queue.front());
+console.log("Размер очереди:", queue.size());
+
+queue.clear();
+console.log("Очередь после очистки:", queue.printQueue());
