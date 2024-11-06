@@ -146,3 +146,115 @@ console.log("Размер очереди:", queue.size());
 
 queue.clear();
 console.log("Очередь после очистки:", queue.printQueue());
+
+// Занятие 5 Задание 3
+// 1 способ
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+Person.prototype.greet = function () {
+  console.log(`Hello, my name is ${this.name} and I am ${this.age} years old.`);
+};
+
+function Person2(name, age, city) {
+  Person.call(this, name, age);
+  this.city = city;
+}
+
+Person2.prototype = Object.create(Person.prototype);
+Person2.prototype.constructor = Person2;
+
+Person2.prototype.logInfo = function () {
+  console.log(`Name: ${this.name}, Age: ${this.age}, City: ${this.city}`);
+};
+
+const person1 = new Person("Matthew", 23);
+const person2 = new Person2("Tanya", 20, "Saint-Petersburg");
+
+person1.greet(); // Hello, my name is Matthew and I am 23 years old.
+person2.greet(); // Hello, my name is Tanya and I am 20 years old.
+person2.logInfo(); // Name: Tanya, Age: 20, City: Saint-Petersburg
+
+// 2 способ
+const personPrototype = {
+  greet: function () {
+    console.log(
+      `Hello, my name is ${this.name} and I am ${this.age} years old.`
+    );
+  },
+};
+
+const person3 = Object.create(personPrototype, {
+  name: { value: "Matthew", writable: true },
+  age: { value: 23, writable: true },
+});
+
+function Person4(name, age, city) {
+  this.name = name;
+  this.age = age;
+  this.city = city;
+}
+
+Person4.prototype = Object.create(personPrototype);
+Person4.prototype.constructor = Person4;
+Person4.prototype.logInfo = function () {
+  console.log(`Name: ${this.name}, Age: ${this.age}, City: ${this.city}`);
+};
+
+const person4 = new Person4("Tanya", 20, "Saint-Petersburg");
+
+person1.greet(); // Hello, my name is Matthew and I am 23 years old.
+person2.greet(); // Hello, my name is Tanya and I am 20 years old.
+person2.logInfo(); // Name: Tanya, Age: 20, City: Saint-Petersburg
+
+// Занятие 5 Задание 4
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  greet() {
+    console.log(
+      `Hello, my name is ${this.name} and I am ${this.age} years old.`
+    );
+  }
+}
+
+class PersonThree extends Person {
+  constructor(name, age, city) {
+    super(name, age);
+    this.city = city;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  set name(newName) {
+    if (typeof newName !== "string" || newName.length === 0) {
+      console.error("Имя должно быть непустой строкой");
+      return;
+    }
+    this._name = newName;
+  }
+
+  get city() {
+    return this._city;
+  }
+  set city(newCity) {
+    this._city = newCity;
+  }
+}
+
+const person5 = new PersonThree("Matthew", 23, "Saint-Petersburg");
+person3.greet(); // Hello, my name is Matthew and I am 32 years old.
+console.log(person3.name); // Matthew
+person3.name = "Петр"; // Изменяем имя через сеттер
+console.log(person3.name); // Петр
+
+console.log(person3.city); // Saint-Petersburg
+person3.city = "Moscow";
+console.log(person3.city); // Moscow
